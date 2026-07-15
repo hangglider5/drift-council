@@ -1,107 +1,90 @@
-import { Hono } from 'hono';
-import { context, redis, reddit } from '@devvit/web/server';
+import { context } from '@devvit/web/server';
+import { Hono, type Context } from 'hono';
+import type { ApiErrorBody, Gust } from '../../shared/domain';
+import { parseCommitGust } from '../../shared/validation';
+import { buildVoyageState, commitGustForUser } from '../voyage-service';
 
-type InitResponse = {
-  type: 'init';
-  postId: string;
-  count: number;
-  username: string;
-};
+const messages = {
+  UNAUTHENTICATED: "Sign in to join today's voyage.",
+  INVALID_GUST: 'Choose one valid grid cell and cardinal direction.',
+  STALE_DAY: "This voyage has ended. Refresh to join today's current.",
+  ALREADY_COMMITTED: 'Your gust for this UTC day is already set.',
+  INTERNAL: 'The current shifted unexpectedly. Please retry.',
+} as const;
 
-type IncrementResponse = {
-  type: 'increment';
-  postId: string;
-  count: number;
-};
+type ApiErrorCode = ApiErrorBody['code'];
 
-type DecrementResponse = {
-  type: 'decrement';
-  postId: string;
-  count: number;
-};
+function publicError(
+  c: Context,
+  status: 400 | 401 | 409 | 500,
+  code: ApiErrorCode,
+  existing?: Gust
+): Response {
+  const body: ApiErrorBody = {
+    status: 'error',
+    code,
+    message: messages[code],
+    ...(existing ? { existing } : {}),
+  };
+  return c.json(body, status);
+}
 
-type ErrorResponse = {
-  status: 'error';
-  message: string;
-};
+function unexpected(c: Context, error: unknown): Response {
+  console.error('Voyage API error', error);
+  return publicError(c, 500, 'INTERNAL');
+}
 
 export const api = new Hono();
 
-api.get('/init', async (c) => {
-  const { postId } = context;
-
-  if (!postId) {
-    console.error('API Init Error: postId not found in devvit context');
-    return c.json<ErrorResponse>(
-      {
-        status: 'error',
-        message: 'postId is required but missing from context',
-      },
-      400
-    );
+api.get('/voyage', async (c) => {
+  if (!context.userId) {
+    return publicError(c, 401, 'UNAUTHENTICATED');
   }
 
   try {
-    const [count, username] = await Promise.all([
-      redis.get('count'),
-      reddit.getCurrentUsername(),
-    ]);
-
-    return c.json<InitResponse>({
-      type: 'init',
-      postId: postId,
-      count: count ? parseInt(count) : 0,
-      username: username ?? 'anonymous',
-    });
+    return c.json(await buildVoyageState(context.userId, new Date()));
   } catch (error) {
-    console.error(`API Init Error for post ${postId}:`, error);
-    let errorMessage = 'Unknown error during initialization';
-    if (error instanceof Error) {
-      errorMessage = `Initialization failed: ${error.message}`;
+    return unexpected(c, error);
+  }
+});
+
+api.post('/gust', async (c) => {
+  if (!context.userId) {
+    return publicError(c, 401, 'UNAUTHENTICATED');
+  }
+
+  let rawBody: unknown;
+  try {
+    rawBody = await c.req.json();
+  } catch {
+    return publicError(c, 400, 'INVALID_GUST');
+  }
+
+  if (JSON.stringify(rawBody).length > 256) {
+    return publicError(c, 400, 'INVALID_GUST');
+  }
+
+  let request;
+  try {
+    request = parseCommitGust(rawBody);
+  } catch {
+    return publicError(c, 400, 'INVALID_GUST');
+  }
+
+  try {
+    const result = await commitGustForUser(context.userId, request, new Date());
+    if (result.kind === 'stale') {
+      return publicError(c, 409, 'STALE_DAY');
     }
-    return c.json<ErrorResponse>(
-      { status: 'error', message: errorMessage },
-      400
+    if (result.kind === 'conflict') {
+      return publicError(c, 409, 'ALREADY_COMMITTED', result.existing);
+    }
+
+    return c.json(
+      { status: result.kind, state: result.state },
+      result.kind === 'committed' ? 201 : 200
     );
+  } catch (error) {
+    return unexpected(c, error);
   }
-});
-
-api.post('/increment', async (c) => {
-  const { postId } = context;
-  if (!postId) {
-    return c.json<ErrorResponse>(
-      {
-        status: 'error',
-        message: 'postId is required',
-      },
-      400
-    );
-  }
-
-  const count = await redis.incrBy('count', 1);
-  return c.json<IncrementResponse>({
-    count,
-    postId,
-    type: 'increment',
-  });
-});
-
-api.post('/decrement', async (c) => {
-  const { postId } = context;
-  if (!postId) {
-    return c.json<ErrorResponse>(
-      {
-        status: 'error',
-        message: 'postId is required',
-      },
-      400
-    );
-  }
-
-  const count = await redis.incrBy('count', -1);
-  return c.json<DecrementResponse>({
-    count,
-    postId,
-    type: 'decrement',
-  });
 });
