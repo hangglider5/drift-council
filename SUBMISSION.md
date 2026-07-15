@@ -39,7 +39,7 @@ After the hackathon: multi-day voyage history, opt-in subreddit themes, and rich
 - [ ] **Source repository:** This checkout has no Git remote. Publish commit `docs: package Drift Council submission`, then paste the public repository URL into Devpost before submission.
 - [x] **Public demo post:** https://www.reddit.com/r/driftcouncildemo/comments/1ux0n8c/drift_council_one_gust_each_one_voyage_together/
 - [x] **App listing:** https://developers.reddit.com/apps/drift-council
-- [ ] **Video URL:** Record from `VIDEO_SCRIPT.md`, upload publicly or unlisted, verify while signed out, then paste the working URL into Devpost.
+- [ ] **Video URL:** The verified local candidate is `docs/media/drift-council-demo.mp4` (55 seconds, 1080p/30 fps, H.264). Upload publicly or unlisted, verify while signed out, then paste the working URL into Devpost.
 - [x] **Technology tags:** Devvit Web, Phaser, TypeScript, Hono, Redis, Vite.
 - [x] **Screenshots prepared:** `docs/media/thumbnail.png`, `docs/media/gameplay.png`, and `docs/media/commit.png`.
 - [ ] **Official rules confirmation:** Re-read https://redditgameswithahook.devpost.com/rules immediately before submission and confirm eligibility, media, source, and deadline requirements in the Devpost UI.

@@ -2,6 +2,10 @@
 
 Record the real expanded Reddit post at 1920×1080 and 30 fps. Keep the cursor deliberate, cut all loading and dead time, use only app sound-free footage, and burn in the exact captions below. Export an H.264 MP4 and verify its public or unlisted URL in a signed-out browser.
 
+## Exported candidate
+
+`docs/media/drift-council-demo.mp4` is a 55-second, 1920×1080, 30 fps H.264 candidate assembled from the real product splash, an isolated production-client ready/preview capture (`0 gusts`, never presented as community data), and the stable deployed committed-state evidence. All six exact captions below are burned in. Upload this file to a Devpost-supported public or unlisted host and verify the URL signed out.
+
 | Time   | Exact caption                                                                             | Screen action                                                                                                            |
 | ------ | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | 0–5s   | `One gust each. One voyage together.`                                                     | Open on the Drift Council inline post, then enter the expanded voyage.                                                   |
