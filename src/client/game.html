@@ -4,13 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="game.css" />
-    <title>Phaser - Template</title>
+    <title>Drift Council</title>
   </head>
 
   <body>
-    <div id="app">
-      <div id="game-container"></div>
-    </div>
+    <main id="app">
+      <header class="status-bar">
+        <div>
+          <p class="eyebrow">TODAY'S VOYAGE</p>
+          <h1>Drift Council</h1>
+        </div>
+        <div class="status-metrics" aria-live="polite">
+          <span id="previous-result">Prologue: the beacon was reached</span>
+          <span id="contribution-count">0 gusts</span>
+          <span id="time-left">--:--:--</span>
+        </div>
+      </header>
+      <section id="game-region" aria-label="Shared wind field">
+        <div
+          id="game-container"
+          role="application"
+          tabindex="0"
+          aria-label="Six by six wind grid. Use arrow keys to move the tile cursor, then choose a gust direction below."
+        ></div>
+        <div id="loading-panel" role="status">Reading the currents…</div>
+      </section>
+      <section id="action-tray" aria-labelledby="instruction">
+        <div>
+          <p id="instruction">Tap a tile to place today's gust.</p>
+          <p id="impact" aria-live="polite"></p>
+        </div>
+        <div id="direction-pad" aria-label="Gust direction">
+          <button data-direction="N" aria-label="Blow north">↑</button>
+          <button data-direction="W" aria-label="Blow west">←</button>
+          <button data-direction="S" aria-label="Blow south">↓</button>
+          <button data-direction="E" aria-label="Blow east">→</button>
+        </div>
+        <button id="commit-button" class="primary" disabled>Commit gust</button>
+        <button id="replay-button" hidden>Replay route</button>
+        <button id="retry-button" hidden>Retry</button>
+      </section>
+    </main>
     <script type="module" src="game.ts"></script>
   </body>
 </html>

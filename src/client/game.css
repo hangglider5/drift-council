@@ -1,17 +1,90 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
+  width: 100%;
+  height: 100%;
   margin: 0;
-  padding: 0;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #0f0f0f;
+  overflow: hidden;
+}
+
+body {
+  color: #e8f6ff;
+  background: #07101f;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+button {
+  color: inherit;
+  border: 1px solid #43617d;
+  background: #13243a;
+  font: inherit;
+}
+
+button:focus-visible,
+#game-container:focus-visible {
+  outline: 3px solid #ffbd59;
+  outline-offset: 2px;
 }
 
 #app {
-  width: 100%;
+  display: grid;
   height: 100vh;
-  overflow: hidden;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.status-bar,
+#action-tray {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.status-bar h1,
+.status-bar p,
+#action-tray p {
+  margin: 0;
+}
+
+.status-metrics,
+#direction-pad {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+#game-region {
+  position: relative;
+  min-height: 0;
 }
 
 #game-container {
   width: 100%;
   height: 100%;
+}
+
+#loading-panel {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+}
+
+#direction-pad button,
+#commit-button,
+#replay-button,
+#retry-button {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+}
+
+#direction-pad button[aria-pressed='true'] {
+  border-color: #39d5ff;
+}
+
+[hidden] {
+  display: none !important;
 }
