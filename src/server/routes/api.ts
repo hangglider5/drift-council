@@ -7,7 +7,7 @@ import { buildVoyageState, commitGustForUser } from '../voyage-service';
 const messages = {
   UNAUTHENTICATED: "Sign in to join today's voyage.",
   INVALID_GUST: 'Choose one valid grid cell and cardinal direction.',
-  STALE_DAY: "This voyage has ended. Refresh to join today's current.",
+  STALE_DAY: "That voyage just closed. Loading today's field…",
   ALREADY_COMMITTED: 'Your gust for this UTC day is already set.',
   INTERNAL: 'The current shifted unexpectedly. Please retry.',
 } as const;

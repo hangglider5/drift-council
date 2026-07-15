@@ -1,5 +1,6 @@
 import type { Direction, RouteOutcome } from '../shared/domain';
 import type { ClientState } from './state';
+import { committedOutcomeMessage } from './ui-copy';
 
 export type HudCallbacks = {
   onDirection(direction: Direction): void;
@@ -135,7 +136,8 @@ export function bindHud(callbacks: HudCallbacks): HudController {
         );
       }
 
-      commitButton.hidden = state.phase === 'committed';
+      commitButton.hidden =
+        state.phase === 'committed' || state.phase === 'error';
       commitButton.disabled = state.phase !== 'preview';
       replayButton.hidden = state.phase !== 'committed';
       retryButton.hidden = state.phase !== 'error';
@@ -155,9 +157,10 @@ export function bindHud(callbacks: HudCallbacks): HudController {
         instruction.textContent = 'Committing your gust…';
         impact.textContent = '';
       } else if (state.phase === 'committed') {
-        instruction.textContent = 'Voyage joined.';
-        impact.textContent =
-          'Your gust is part of the council. Replay the route anytime.';
+        instruction.textContent = state.voyage
+          ? committedOutcomeMessage(state.voyage.route.outcome)
+          : 'Your gust joined the council.';
+        impact.textContent = 'Replay the shared route anytime.';
       } else {
         instruction.textContent = state.error ?? 'The current shifted.';
         impact.textContent = state.pending

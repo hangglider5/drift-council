@@ -7,26 +7,22 @@
       name="viewport"
       content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, height=device-height, user-scalable=0"
     />
-    <title>devvit</title>
+    <title>Drift Council</title>
   </head>
-  <body class="app">
-    <img class="snoo" src="/snoo.png" alt="Snoo" />
-    <div class="content">
-      <h1 class="title" id="title"></h1>
-      <p class="description">
-        Edit <span class="code">src/client/splash.ts</span> to get started.
-      </p>
-    </div>
-    <div>
-      <button class="start-button" id="start-button">Start</button>
-    </div>
-    <footer class="footer">
-      <div class="docs-link" tabindex="0" id="docs-link">Docs</div>
-      <span class="divider">|</span>
-      <div class="docs-link" tabindex="0" id="playtest-link">r/Devvit</div>
-      <span class="divider">|</span>
-      <div class="docs-link" tabindex="0" id="discord-link">Discord</div>
-    </footer>
+  <body>
+    <main class="splash-shell">
+      <div class="current-mark" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="splash-copy">
+        <p class="eyebrow">TODAY'S SHARED CURRENT</p>
+        <h1>Drift Council</h1>
+        <p>One gust each. One voyage together.</p>
+      </div>
+      <button class="start-button" id="start-button">
+        Enter today's voyage
+      </button>
+    </main>
     <script type="module" src="splash.ts" defer></script>
   </body>
 </html>

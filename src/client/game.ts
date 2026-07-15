@@ -1,13 +1,15 @@
 import * as Phaser from 'phaser';
-import type { Direction, GridCell } from '../shared/domain';
+import type { CommitGustRequest, Direction, GridCell } from '../shared/domain';
 import { ApiError, commitGust, fetchVoyage } from './api';
 import { bindHud } from './hud';
+import { commitRequestForPhase } from './interaction';
 import { DriftScene } from './scenes/DriftScene';
 import {
   initialClientState,
   reduceClientState,
   type ClientAction,
 } from './state';
+import { COMMIT_FAILURE_MESSAGE, LOAD_FAILURE_MESSAGE } from './ui-copy';
 
 let state = initialClientState;
 let keyboardCursor: GridCell = { x: 0, y: 0 };
@@ -42,13 +44,10 @@ function dispatch(action: ClientAction): void {
 async function load(): Promise<void> {
   try {
     dispatch({ type: 'loaded', voyage: await fetchVoyage() });
-  } catch (error) {
+  } catch {
     dispatch({
       type: 'loadFailed',
-      message:
-        error instanceof ApiError
-          ? error.body.message
-          : 'Unable to read the currents. Please retry.',
+      message: LOAD_FAILURE_MESSAGE,
     });
   }
 }
@@ -62,15 +61,9 @@ function chooseDirection(direction: Direction): void {
   dispatch({ type: 'chooseDirection', direction });
 }
 
-async function sendPendingGust(): Promise<void> {
-  if (!state.pending || !state.voyage) return;
-
+async function sendPendingGust(request: CommitGustRequest): Promise<void> {
   try {
-    const response = await commitGust({
-      dayId: state.voyage.dayId,
-      cell: state.pending.cell,
-      direction: state.pending.direction,
-    });
+    const response = await commitGust(request);
     dispatch({ type: 'commitSucceeded', voyage: response.state });
   } catch (error) {
     if (error instanceof ApiError && error.body.code === 'STALE_DAY') {
@@ -85,17 +78,17 @@ async function sendPendingGust(): Promise<void> {
 
     dispatch({
       type: 'commitFailed',
-      message:
-        error instanceof ApiError
-          ? error.body.message
-          : 'The current shifted unexpectedly. Please retry.',
+      message: COMMIT_FAILURE_MESSAGE,
     });
   }
 }
 
 function commit(): void {
+  const request = commitRequestForPhase(state, 'preview');
+  if (!request) return;
+
   dispatch({ type: 'submit' });
-  void sendPendingGust();
+  void sendPendingGust(request);
 }
 
 function replay(): void {
@@ -103,12 +96,13 @@ function replay(): void {
 }
 
 function retry(): void {
-  if (state.pending) {
+  const request = commitRequestForPhase(state, 'error');
+  if (request) {
     dispatch({ type: 'retryCommit' });
-    void sendPendingGust();
+    void sendPendingGust(request);
     return;
   }
-  void load();
+  if (state.phase === 'error') void load();
 }
 
 const gameContainer = document.getElementById('game-container');

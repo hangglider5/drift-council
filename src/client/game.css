@@ -1,3 +1,15 @@
+:root {
+  color-scheme: dark;
+  --ink: #07101f;
+  --panel: #0d1a2d;
+  --panel-2: #13243a;
+  --cyan: #39d5ff;
+  --amber: #ffbd59;
+  --text: #f4f8ff;
+  --muted: #9ab0c8;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -8,40 +20,59 @@ body {
   height: 100%;
   margin: 0;
   overflow: hidden;
+  background: var(--ink);
 }
 
 body {
-  color: #e8f6ff;
-  background: #07101f;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color: var(--text);
 }
 
 button {
-  color: inherit;
-  border: 1px solid #43617d;
-  background: #13243a;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.55rem 0.85rem;
+  color: var(--text);
+  border: 1px solid #54728f;
+  border-radius: 10px;
+  background: var(--panel-2);
   font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--cyan);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
 }
 
 button:focus-visible,
 #game-container:focus-visible {
-  outline: 3px solid #ffbd59;
+  outline: 3px solid var(--amber);
   outline-offset: 2px;
 }
 
 #app {
   display: grid;
-  height: 100vh;
+  height: 100dvh;
   grid-template-rows: auto minmax(0, 1fr) auto;
 }
 
 .status-bar,
 #action-tray {
-  display: flex;
+  background: color-mix(in srgb, var(--panel) 94%, transparent);
+}
+
+.status-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
+  gap: 12px 20px;
+  padding: 12px 18px;
+  border-bottom: 1px solid #203954;
 }
 
 .status-bar h1,
@@ -50,41 +81,159 @@ button:focus-visible,
   margin: 0;
 }
 
-.status-metrics,
-#direction-pad {
+.status-bar h1 {
+  font-size: clamp(1.15rem, 2.6vw, 1.55rem);
+  line-height: 1.1;
+}
+
+.eyebrow {
+  color: var(--cyan);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.status-metrics {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  justify-content: flex-end;
+  gap: 6px 14px;
+  color: var(--muted);
+  font-size: 0.8rem;
 }
 
-#game-region {
-  position: relative;
-  min-height: 0;
-}
-
+#game-region,
 #game-container {
+  position: relative;
   width: 100%;
   height: 100%;
+  min-height: 0;
 }
 
 #loading-panel {
   position: absolute;
+  z-index: 2;
   inset: 50% auto auto 50%;
+  max-width: min(28rem, calc(100% - 32px));
+  padding: 12px 16px;
   translate: -50% -50%;
+  color: var(--text);
+  border: 1px solid #2d4d6b;
+  border-radius: 12px;
+  background: var(--panel);
+  text-align: center;
 }
 
-#direction-pad button,
-#commit-button,
-#replay-button,
-#retry-button {
-  min-width: 2.75rem;
-  min-height: 2.75rem;
+#action-tray {
+  display: grid;
+  grid-template-columns: minmax(14rem, 1fr) auto auto;
+  align-items: center;
+  gap: 12px 18px;
+  padding: 12px 18px max(12px, env(safe-area-inset-bottom));
+  border-top: 1px solid #203954;
+}
+
+#instruction {
+  color: var(--text);
+  font-weight: 700;
+}
+
+#impact {
+  min-height: 1.15em;
+  margin-top: 2px !important;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+#direction-pad {
+  display: grid;
+  grid-template-columns: repeat(4, 44px);
+  gap: 6px;
+}
+
+#direction-pad button {
+  padding: 0;
+  font-size: 1.1rem;
 }
 
 #direction-pad button[aria-pressed='true'] {
-  border-color: #39d5ff;
+  color: var(--ink);
+  border-color: var(--cyan);
+  background: var(--cyan);
+}
+
+.primary {
+  color: var(--ink);
+  border-color: var(--amber);
+  background: var(--amber);
 }
 
 [hidden] {
   display: none !important;
+}
+
+@media (max-width: 640px) {
+  .status-bar {
+    padding: 10px 14px;
+  }
+
+  .status-metrics {
+    max-width: 12rem;
+    gap: 3px 10px;
+    font-size: 0.7rem;
+  }
+
+  #previous-result {
+    flex-basis: 100%;
+    text-align: right;
+  }
+
+  #action-tray {
+    grid-template-columns: 1fr auto;
+    gap: 8px 12px;
+    padding: 10px 14px max(10px, env(safe-area-inset-bottom));
+  }
+
+  #action-tray > div:first-child {
+    min-width: 0;
+  }
+
+  #instruction {
+    font-size: 0.88rem;
+  }
+
+  #impact {
+    font-size: 0.74rem;
+  }
+
+  #commit-button,
+  #replay-button,
+  #retry-button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 390px) {
+  .status-bar h1 {
+    font-size: 1.05rem;
+  }
+
+  .status-metrics {
+    max-width: 10.5rem;
+  }
+
+  #direction-pad {
+    grid-template-columns: repeat(4, 44px);
+    gap: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
 }
