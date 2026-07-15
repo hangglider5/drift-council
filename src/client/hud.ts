@@ -35,6 +35,14 @@ const previousOutcomeCopy: Record<RouteOutcome, string> = {
   lost: 'Yesterday: drifted away',
 };
 
+export function displayedDirection(state: ClientState): Direction | null {
+  return (
+    state.pending?.direction ??
+    state.voyage?.playerContribution?.direction ??
+    null
+  );
+}
+
 export function bindHud(callbacks: HudCallbacks): HudController {
   const previousResult = requiredElement<HTMLSpanElement>('previous-result');
   const contributionCount =
@@ -117,12 +125,13 @@ export function bindHud(callbacks: HudCallbacks): HudController {
         !state.selectedCell ||
         state.phase === 'submitting' ||
         state.phase === 'committed';
+      const chosenDirection = displayedDirection(state);
       for (const button of directionButtons) {
         const direction = button.dataset.direction as Direction;
         button.disabled = directionsDisabled;
         button.setAttribute(
           'aria-pressed',
-          String(state.pending?.direction === direction)
+          String(chosenDirection === direction)
         );
       }
 
