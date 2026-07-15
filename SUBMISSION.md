@@ -42,7 +42,7 @@ After the hackathon: multi-day voyage history, opt-in subreddit themes, and rich
 - [ ] **Video URL:** The verified local candidate is `docs/media/drift-council-demo.mp4` (55 seconds, 1080p/30 fps, H.264). Upload publicly or unlisted, verify while signed out, then paste the working URL into Devpost.
 - [x] **Technology tags:** Devvit Web, Phaser, TypeScript, Hono, Redis, Vite.
 - [x] **Screenshots prepared:** `docs/media/thumbnail.png`, `docs/media/gameplay.png`, and `docs/media/commit.png`.
-- [ ] **Official rules confirmation:** Re-read https://redditgameswithahook.devpost.com/rules immediately before submission and confirm eligibility, media, source, and deadline requirements in the Devpost UI.
+- [x] **Official rules review:** Re-read https://redditgameswithahook.devpost.com/rules on July 15, 2026. The project has a Devvit app listing, detailed English README, public demo post in a public testing subreddit, and an optional demo video under one minute. The entrant must personally accept the Official Rules checkbox in the final Devpost step.
 - [ ] **Devpost receipt:** After the external submission is confirmed, save the confirmation screenshot and record the exact timestamp here.
 
-Do not submit this checklist with any unchecked URL or confirmation item. The unchecked items require external accounts or UI and are intentionally left for the final controller pass; no URL has been invented.
+Do not submit this checklist with any unchecked URL or confirmation item. The remaining unchecked items require the final external UI pass; no URL or receipt has been invented.
