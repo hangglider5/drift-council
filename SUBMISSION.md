@@ -39,7 +39,7 @@ After the hackathon: multi-day voyage history, opt-in subreddit themes, and rich
 - [x] **Source repository:** https://github.com/hangglider5/drift-council
 - [x] **Public demo post:** https://www.reddit.com/r/driftcouncildemo/comments/1ux0n8c/drift_council_one_gust_each_one_voyage_together/
 - [x] **App listing:** https://developers.reddit.com/apps/drift-council
-- [ ] **Video URL:** The verified local candidate is `docs/media/drift-council-demo.mp4` (55 seconds, 1080p/30 fps, H.264). Upload publicly or unlisted, verify while signed out, then paste the working URL into Devpost.
+- [x] **Video URL:** https://vimeo.com/1210240411 — public, 55 seconds, and verified to return HTTP 200 before being saved in Devpost.
 - [x] **Technology tags:** Devvit Web, Phaser, TypeScript, Hono, Redis, Vite.
 - [x] **Screenshots prepared:** `docs/media/thumbnail.png`, `docs/media/gameplay.png`, and `docs/media/commit.png`.
 - [x] **Official rules review:** Re-read https://redditgameswithahook.devpost.com/rules on July 15, 2026. The project has a Devvit app listing, detailed English README, public demo post in a public testing subreddit, and an optional demo video under one minute. The entrant must personally accept the Official Rules checkbox in the final Devpost step.

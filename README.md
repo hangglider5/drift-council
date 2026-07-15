@@ -80,6 +80,7 @@ Use the subreddit moderator menu item **Create a new post** to create the intera
 - [Source repository](https://github.com/hangglider5/drift-council)
 - [Live demo post](https://www.reddit.com/r/driftcouncildemo/comments/1ux0n8c/drift_council_one_gust_each_one_voyage_together/)
 - [Devvit app listing](https://developers.reddit.com/apps/drift-council)
+- [55-second demo video](https://vimeo.com/1210240411)
 - [Reddit's Games with a Hook Hackathon](https://redditgameswithahook.devpost.com/)
 
 Submission copy, media inventory, and the final external-link checklist are in [SUBMISSION.md](SUBMISSION.md). The 45–55 second capture plan is in [VIDEO_SCRIPT.md](VIDEO_SCRIPT.md).
