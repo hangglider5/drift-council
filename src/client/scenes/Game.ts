@@ -1,6 +1,18 @@
 import { Scene } from 'phaser';
 import * as Phaser from 'phaser';
-import { IncrementResponse, DecrementResponse, InitResponse } from '../../shared/api';
+
+type InitResponse = {
+  type: 'init';
+  postId: string;
+  count: number;
+  username: string;
+};
+
+type CounterResponse = {
+  type: 'increment' | 'decrement';
+  postId: string;
+  count: number;
+};
 
 export class Game extends Scene {
   camera: Phaser.Cameras.Scene2D.Camera;
@@ -54,7 +66,12 @@ export class Game extends Scene {
     })();
 
     // Button styling helper
-    const createButton = (y: number, label: string, color: string, onClick: () => void) => {
+    const createButton = (
+      y: number,
+      label: string,
+      color: string,
+      onClick: () => void
+    ) => {
       const button = this.add
         .text(512, y, label, {
           fontFamily: 'Arial Black',
@@ -68,44 +85,61 @@ export class Game extends Scene {
         })
         .setOrigin(0.5)
         .setInteractive({ useHandCursor: true })
-        .on('pointerover', () => button.setStyle({ backgroundColor: '#555555' }))
+        .on('pointerover', () =>
+          button.setStyle({ backgroundColor: '#555555' })
+        )
         .on('pointerout', () => button.setStyle({ backgroundColor: '#444444' }))
         .on('pointerdown', onClick);
       return button;
     };
 
     // Increment button
-    this.incButton = createButton(this.scale.height * 0.55, 'Increment', '#00ff00', async () => {
-      try {
-        const response = await fetch('/api/increment', { method: 'POST' });
-        if (!response.ok) throw new Error(`API error: ${response.status}`);
+    this.incButton = createButton(
+      this.scale.height * 0.55,
+      'Increment',
+      '#00ff00',
+      async () => {
+        try {
+          const response = await fetch('/api/increment', { method: 'POST' });
+          if (!response.ok) throw new Error(`API error: ${response.status}`);
 
-        const data = (await response.json()) as IncrementResponse;
-        this.count = data.count;
-        this.updateCountText();
-      } catch (error) {
-        console.error('Failed to increment count:', error);
+          const data = (await response.json()) as CounterResponse;
+          this.count = data.count;
+          this.updateCountText();
+        } catch (error) {
+          console.error('Failed to increment count:', error);
+        }
       }
-    });
+    );
 
     // Decrement button
-    this.decButton = createButton(this.scale.height * 0.65, 'Decrement', '#ff5555', async () => {
-      try {
-        const response = await fetch('/api/decrement', { method: 'POST' });
-        if (!response.ok) throw new Error(`API error: ${response.status}`);
+    this.decButton = createButton(
+      this.scale.height * 0.65,
+      'Decrement',
+      '#ff5555',
+      async () => {
+        try {
+          const response = await fetch('/api/decrement', { method: 'POST' });
+          if (!response.ok) throw new Error(`API error: ${response.status}`);
 
-        const data = (await response.json()) as DecrementResponse;
-        this.count = data.count;
-        this.updateCountText();
-      } catch (error) {
-        console.error('Failed to decrement count:', error);
+          const data = (await response.json()) as CounterResponse;
+          this.count = data.count;
+          this.updateCountText();
+        } catch (error) {
+          console.error('Failed to decrement count:', error);
+        }
       }
-    });
+    );
 
     // Game Over button – navigates to the GameOver scene
-    this.goButton = createButton(this.scale.height * 0.75, 'Game Over', '#ffffff', () => {
-      this.scene.start('GameOver');
-    });
+    this.goButton = createButton(
+      this.scale.height * 0.75,
+      'Game Over',
+      '#ffffff',
+      () => {
+        this.scene.start('GameOver');
+      }
+    );
 
     // Setup responsive layout
     this.updateLayout(this.scale.width, this.scale.height);
@@ -125,7 +159,10 @@ export class Game extends Scene {
     if (this.background) {
       this.background.setPosition(width / 2, height / 2);
       if (this.background.width && this.background.height) {
-        const scale = Math.max(width / this.background.width, height / this.background.height);
+        const scale = Math.max(
+          width / this.background.width,
+          height / this.background.height
+        );
         this.background.setScale(scale);
       }
     }
