@@ -6,3 +6,6 @@
 .worktrees/
 dist/
 node_modules/
+.devvit/
+coverage/
+*.log
