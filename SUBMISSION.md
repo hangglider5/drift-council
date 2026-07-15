@@ -43,6 +43,6 @@ After the hackathon: multi-day voyage history, opt-in subreddit themes, and rich
 - [x] **Technology tags:** Devvit Web, Phaser, TypeScript, Hono, Redis, Vite.
 - [x] **Devpost media uploaded:** `docs/media/thumbnail.png` is the project thumbnail; `docs/media/gameplay.png` and `docs/media/commit.png` are the captioned image gallery.
 - [x] **Official rules review:** Re-read https://redditgameswithahook.devpost.com/rules on July 15, 2026. The project has a Devvit app listing, detailed English README, public demo post in a public testing subreddit, and an optional demo video under one minute. The entrant must personally accept the Official Rules checkbox in the final Devpost step.
-- [ ] **Devpost receipt:** After the external submission is confirmed, save the confirmation screenshot and record the exact timestamp here.
+- [x] **Devpost receipt:** Devpost displayed the green `SUBMITTED` status for Drift Council at 2026-07-16 01:03:43 CST (+0800). Public project: https://devpost.com/software/drift-council
 
-Do not submit this checklist with any unchecked URL or confirmation item. The remaining unchecked items require the final external UI pass; no URL or receipt has been invented.
+All submission links, media, rules review, and the final Devpost receipt have been verified.
